@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
 import 'jbh_ringtone_platform_interface.dart';
-import 'jbh_ringtone_model.dart';
+import 'model/jbh_ringtone_model.dart';
 
 /// An implementation of [JbhRingtonePlatform] that uses method channels.
 class MethodChannelJbhRingtone extends JbhRingtonePlatform {
@@ -19,11 +19,11 @@ class MethodChannelJbhRingtone extends JbhRingtonePlatform {
   }
 
   @override
-  Future<List<Map<String, dynamic>>> getRingtones() async {
+  Future<List<JbhRingtoneModel>> getRingtones() async {
     try {
       final String result = await methodChannel.invokeMethod('getRingtones');
       final List<dynamic> jsonList = json.decode(result);
-      return jsonList.cast<Map<String, dynamic>>();
+      return jsonList.map((json) => JbhRingtoneModel.fromMap(json)).toList(); //cast<Map<String, dynamic>>();
     } on PlatformException catch (e) {
       throw Exception('Failed to get ringtones: ${e.message}');
     }

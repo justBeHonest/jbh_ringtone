@@ -1,8 +1,8 @@
 import 'jbh_ringtone_platform_interface.dart';
-import 'jbh_ringtone_model.dart';
+import 'model/jbh_ringtone_model.dart';
 
 // Export the model and enum for public use
-export 'jbh_ringtone_model.dart';
+export 'model/jbh_ringtone_model.dart';
 
 class JbhRingtone {
   /// Get platform version
@@ -11,7 +11,7 @@ class JbhRingtone {
   }
 
   /// Get all ringtones (legacy method for backward compatibility)
-  Future<List<Map<String, dynamic>>> getRingtones() {
+  Future<List<JbhRingtoneModel>> getRingtones() {
     return JbhRingtonePlatform.instance.getRingtones();
   }
 
