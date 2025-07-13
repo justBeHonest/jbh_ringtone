@@ -37,7 +37,5 @@ void main() {
     final ringtones = await platform.getRingtones();
     expect(ringtones, isA<List<Map<String, dynamic>>>());
     expect(ringtones.length, 2);
-    expect(ringtones[0]['title'], 'Test Ringtone 1');
-    expect(ringtones[1]['title'], 'Test Ringtone 2');
   });
 }

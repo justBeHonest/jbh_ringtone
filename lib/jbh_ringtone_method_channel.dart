@@ -23,7 +23,7 @@ class MethodChannelJbhRingtone extends JbhRingtonePlatform {
     try {
       final String result = await methodChannel.invokeMethod('getRingtones');
       final List<dynamic> jsonList = json.decode(result);
-      return jsonList.map((json) => JbhRingtoneModel.fromMap(json)).toList(); //cast<Map<String, dynamic>>();
+      return jsonList.map((json) => JbhRingtoneModel.fromMap(json)).toList();
     } on PlatformException catch (e) {
       throw Exception('Failed to get ringtones: ${e.message}');
     }
@@ -59,6 +59,48 @@ class MethodChannelJbhRingtone extends JbhRingtonePlatform {
       return jsonList.map((json) => JbhRingtoneModel.fromMap(json)).toList();
     } on PlatformException catch (e) {
       throw Exception('Failed to get ringtones with filter: ${e.message}');
+    }
+  }
+
+  @override
+  Future<String> playRingtone(String uri) async {
+    try {
+      final String result = await methodChannel.invokeMethod('playRingtone', {'uri': uri});
+      return result;
+    } on PlatformException catch (e) {
+      throw Exception('Failed to play ringtone: ${e.message}');
+    }
+  }
+
+  @override
+  Future<String> stopRingtone() async {
+    try {
+      final String result = await methodChannel.invokeMethod('stopRingtone');
+      return result;
+    } on PlatformException catch (e) {
+      throw Exception('Failed to stop ringtone: ${e.message}');
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRingtoneInfo(String uri) async {
+    try {
+      final String result = await methodChannel.invokeMethod('getRingtoneInfo', {'uri': uri});
+      final Map<String, dynamic> jsonMap = json.decode(result);
+      return jsonMap;
+    } on PlatformException catch (e) {
+      throw Exception('Failed to get ringtone info: ${e.message}');
+    }
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRingtoneDetails(String uri) async {
+    try {
+      final String result = await methodChannel.invokeMethod('getRingtoneDetails', {'uri': uri});
+      final Map<String, dynamic> jsonMap = json.decode(result);
+      return jsonMap;
+    } on PlatformException catch (e) {
+      throw Exception('Failed to get ringtone details: ${e.message}');
     }
   }
 }

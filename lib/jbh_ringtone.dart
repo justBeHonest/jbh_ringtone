@@ -30,6 +30,26 @@ class JbhRingtone {
     return JbhRingtonePlatform.instance.getRingtonesWithFilter(includeRingtone: includeRingtone, includeNotification: includeNotification, includeAlarm: includeAlarm);
   }
 
+  /// Play a ringtone by URI
+  Future<String> playRingtone(String uri) {
+    return JbhRingtonePlatform.instance.playRingtone(uri);
+  }
+
+  /// Stop currently playing ringtone
+  Future<String> stopRingtone() {
+    return JbhRingtonePlatform.instance.stopRingtone();
+  }
+
+  /// Get information about a specific ringtone
+  Future<Map<String, dynamic>> getRingtoneInfo(String uri) {
+    return JbhRingtonePlatform.instance.getRingtoneInfo(uri);
+  }
+
+  /// Get detailed information about a specific ringtone (enhanced version)
+  Future<Map<String, dynamic>> getRingtoneDetails(String uri) {
+    return JbhRingtonePlatform.instance.getRingtoneDetails(uri);
+  }
+
   // Convenience methods for specific ringtone types
   Future<List<JbhRingtoneModel>> getRingtoneOnly() {
     return getRingtonesByType(RingtoneType.ringtone);

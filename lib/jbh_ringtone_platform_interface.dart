@@ -47,4 +47,24 @@ abstract class JbhRingtonePlatform extends PlatformInterface {
   Future<List<JbhRingtoneModel>> getRingtonesWithFilter({bool includeRingtone = false, bool includeNotification = false, bool includeAlarm = false}) {
     throw UnimplementedError('getRingtonesWithFilter() has not been implemented.');
   }
+
+  /// Play a ringtone by URI
+  Future<String> playRingtone(String uri) {
+    throw UnimplementedError('playRingtone() has not been implemented.');
+  }
+
+  /// Stop currently playing ringtone
+  Future<String> stopRingtone() {
+    throw UnimplementedError('stopRingtone() has not been implemented.');
+  }
+
+  /// Get information about a specific ringtone
+  Future<Map<String, dynamic>> getRingtoneInfo(String uri) {
+    throw UnimplementedError('getRingtoneInfo() has not been implemented.');
+  }
+
+  /// Get detailed information about a specific ringtone (enhanced version)
+  Future<Map<String, dynamic>> getRingtoneDetails(String uri) {
+    throw UnimplementedError('getRingtoneDetails() has not been implemented.');
+  }
 }

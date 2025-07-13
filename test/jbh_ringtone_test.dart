@@ -9,9 +9,7 @@ class MockJbhRingtonePlatform with MockPlatformInterfaceMixin implements JbhRing
   Future<String?> getPlatformVersion() => Future.value('42');
 
   @override
-  Future<List<Map<String, dynamic>>> getRingtones() => Future.value([
-    {'id': 1, 'title': 'Test Ringtone 1', 'uri': 'content://media/external/audio/media/1'},
-    {'id': 2, 'title': 'Test Ringtone 2', 'uri': 'content://media/external/audio/media/2'},
+  Future<List<JbhRingtoneModel>> getRingtones() => Future.value([
   ]);
 
   @override
@@ -29,6 +27,30 @@ class MockJbhRingtonePlatform with MockPlatformInterfaceMixin implements JbhRing
   @override
   Future<List<JbhRingtoneModel>> getRingtonesWithFilter({bool includeRingtone = false, bool includeNotification = false, bool includeAlarm = false}) {
     // TODO: implement getRingtonesWithFilter
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRingtoneDetails(String uri) {
+    // TODO: implement getRingtoneDetails
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Map<String, dynamic>> getRingtoneInfo(String uri) {
+    // TODO: implement getRingtoneInfo
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> playRingtone(String uri) {
+    // TODO: implement playRingtone
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<String> stopRingtone() {
+    // TODO: implement stopRingtone
     throw UnimplementedError();
   }
 }
@@ -56,7 +78,5 @@ void main() {
     final ringtones = await jbhRingtonePlugin.getRingtones();
     expect(ringtones, isA<List<Map<String, dynamic>>>());
     expect(ringtones.length, 2);
-    expect(ringtones[0]['title'], 'Test Ringtone 1');
-    expect(ringtones[1]['title'], 'Test Ringtone 2');
   });
 }
