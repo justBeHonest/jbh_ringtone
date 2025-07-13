@@ -32,7 +32,7 @@ class JbhRingtonePlugin: FlutterPlugin, MethodCallHandler {
         }
         "getPlatformVersion" -> {
             result.success("Android ${android.os.Build.VERSION.RELEASE}")
-        } 
+        }
         else -> {
             result.notImplemented()
         }

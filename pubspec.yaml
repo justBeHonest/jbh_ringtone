@@ -1,6 +1,6 @@
 name: jbh_ringtone
 description: "A Flutter plugin that provides easy access to device ringtones on Android and iOS platforms. Get real ringtone names, IDs, and URIs with a simple API."
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/justBeHonest/jbh_ringtone
 repository: https://github.com/justBeHonest/jbh_ringtone
 issue_tracker: https://github.com/justBeHonest/jbh_ringtone/issues

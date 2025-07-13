@@ -3,16 +3,29 @@
 [![pub package](https://img.shields.io/pub/v/jbh_ringtone.svg)](https://pub.dev/packages/jbh_ringtone)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A Flutter plugin that provides easy access to device ringtones on Android and iOS platforms. This plugin allows you to retrieve the list of available ringtones with their real names, IDs, and URIs.
+A Flutter plugin that provides easy access to device ringtones. **Currently in active development** - this plugin allows you to retrieve the list of available ringtones with their IDs, titles, and URIs.
+
+## 🚧 Current Status
+
+This plugin is **actively being developed** and currently supports:
+- ✅ **Android**: Full support for retrieving ringtones
+- 🚧 **iOS**: Coming soon (in development)
+- 📋 **Future plans**: Audio preview, selection features, and enhanced functionality
 
 ## Features
 
-- 📱 **Cross-platform support**: Works on both Android and iOS
-- 🎵 **Real ringtone names**: Gets actual ringtone names as they appear on the device
-- 🔍 **Comprehensive data**: Provides ID, title, and URI for each ringtone
+### Currently Available
+- 📱 **Android support**: Works on Android devices (API level 21+)
+- 🎵 **Ringtone listing**: Retrieves available ringtones with IDs, titles, and URIs
 - ⚡ **Easy to use**: Simple API with no complex setup required
 - 🛡️ **Error handling**: Robust error handling with meaningful error messages
 - 📦 **No dependencies**: Lightweight with minimal external dependencies
+
+### Coming Soon
+- 🍎 **iOS support**: Full cross-platform compatibility
+- 🎧 **Audio preview**: Listen to ringtones before selection
+- 🎯 **Enhanced selection**: Better ringtone management features
+- 📝 **Improved titles**: Better ringtone name resolution
 
 ## Getting Started
 
@@ -22,7 +35,7 @@ Add `jbh_ringtone` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  jbh_ringtone: ^1.0.0
+  jbh_ringtone: ^1.0.1
 ```
 
 Then run:
@@ -39,7 +52,7 @@ No additional setup required! The plugin automatically handles all necessary per
 
 #### iOS
 
-No additional setup required! The plugin works out of the box on iOS devices.
+**Note**: iOS support is currently in development and will be available in future updates.
 
 ## Usage
 
@@ -224,7 +237,7 @@ try {
 | Platform | Support | Notes |
 |----------|---------|-------|
 | Android | ✅ Full | Requires Android API level 21+ |
-| iOS | ✅ Full | Works on all iOS versions |
+| iOS | 🚧 In Development | Coming in future updates |
 | Web | ❌ Not supported | Platform-specific functionality |
 | Desktop | ❌ Not supported | Platform-specific functionality |
 
@@ -238,7 +251,20 @@ The plugin automatically requests the following permissions:
 
 ### iOS
 
-No special permissions required.
+**Note**: iOS permissions will be documented when iOS support is released.
+
+## Roadmap
+
+### Version 1.1 (Next Release)
+- 🍎 iOS support
+- 🎧 Basic audio preview functionality
+- 📝 Improved ringtone title resolution
+
+### Future Versions
+- 🎯 Enhanced selection features
+- 🔄 Ringtone management (set as default, etc.)
+- 📱 Better UI components
+- 🧪 Comprehensive testing suite
 
 ## Example App
 
@@ -251,7 +277,7 @@ Check out the [example app](example/) for a complete implementation showing how 
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
+Contributions are welcome! This is an actively developed plugin, and we'd love your help. Please feel free to submit a Pull Request. For major changes, please open an issue first to discuss what you would like to change.
 
 ### Development Setup
 
@@ -293,4 +319,6 @@ If you encounter any issues or have questions, please:
 ---
 
 **Made with ❤️ for the Flutter community**
+
+*This plugin is actively maintained and developed. Stay tuned for regular updates and new features!*
 
