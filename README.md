@@ -3,32 +3,35 @@
 [![pub package](https://img.shields.io/pub/v/jbh_ringtone.svg)](https://pub.dev/packages/jbh_ringtone)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A Flutter plugin that provides easy access to device ringtones. **Currently in active development** - this plugin allows you to retrieve the list of available ringtones with their IDs, titles, URIs, and types.
+A Flutter plugin that provides easy access to device ringtones with advanced features. **Currently in active development** - this plugin allows you to retrieve the list of available ringtones with their IDs, titles, URIs, types, and even play them directly.
 
 ## 🚧 Current Status
 
 This plugin is **actively being developed** and currently supports:
-- ✅ **Android**: Full support for retrieving ringtones with different types
+- ✅ **Android**: Full support for retrieving ringtones with different types, playing audio, and detailed information
 - 🚧 **iOS**: Coming soon (in development)
-- 📋 **Future plans**: Audio preview, selection features, and enhanced functionality
+- 📋 **Future plans**: Enhanced audio controls, selection features, and cross-platform functionality
 
 ## Features
 
 ### Currently Available
 - 📱 **Android support**: Works on Android devices (API level 21+)
-- 🎵 **Ringtone listing**: Retrieves available ringtones with IDs, titles, URIs, and types
+- 🎵 **Ringtone listing**: Retrieves available ringtones with comprehensive information
+- 🎧 **Audio playback**: Play and stop ringtones directly from the plugin
 - 🎯 **Type-specific methods**: Get ringtones by type (ringtone, notification, alarm)
 - 🔍 **Flexible filtering**: Custom filter options for multiple ringtone types
-- 📦 **Typed models**: Strongly typed `JbhRingtoneModel` instead of generic maps
-- ⚡ **Easy to use**: Simple API with no complex setup required
+- 📦 **Enhanced models**: Rich `JbhRingtoneModel` with file size, duration, and metadata
+- ⚡ **Performance optimized**: Fast loading with lazy loading for detailed information
 - 🛡️ **Error handling**: Robust error handling with meaningful error messages
 - 📦 **No dependencies**: Lightweight with minimal external dependencies
+- 🔄 **Real-time info**: Get live information about currently playing ringtones
 
 ### Coming Soon
 - 🍎 **iOS support**: Full cross-platform compatibility
-- 🎧 **Audio preview**: Listen to ringtones before selection
 - 🎯 **Enhanced selection**: Better ringtone management features
 - 📝 **Improved titles**: Better ringtone name resolution
+- 🎛️ **Volume control**: Adjust playback volume
+- ⏱️ **Playback controls**: Pause, resume, and seek functionality
 
 ## Getting Started
 
@@ -59,7 +62,7 @@ No additional setup required! The plugin automatically handles all necessary per
 
 ## Usage
 
-### Basic Usage with New API
+### Basic Usage with Enhanced API
 
 ```dart
 import 'package:jbh_ringtone/jbh_ringtone.dart';
@@ -69,23 +72,56 @@ void main() async {
   JbhRingtone ringtone = JbhRingtone();
   
   try {
-    // Get all ringtones (new typed API)
-    List<JbhRingtoneModel> allRingtones = await ringtone.getAllRingtones();
+    // Get all ringtones (enhanced typed API)
+    List<JbhRingtoneModel> allRingtones = await ringtone.getRingtones();
     
     print('Found ${allRingtones.length} ringtones');
     
-    // Display each ringtone with type information
+    // Display each ringtone with enhanced information
     for (var ringtone in allRingtones) {
       print('Title: ${ringtone.title}');
+      print('Display Title: ${ringtone.displayTitle}');
+      print('File Name: ${ringtone.fileName}');
       print('ID: ${ringtone.id}');
       print('URI: ${ringtone.uri}');
       print('Type: ${ringtone.type.displayName}');
+      print('Duration: ${ringtone.formattedDuration}');
+      print('File Size: ${ringtone.formattedFileSize}');
+      print('Is Default: ${ringtone.isDefault}');
       print('---');
     }
   } catch (e) {
     print('Error: $e');
   }
 }
+```
+
+### Audio Playback
+
+```dart
+// Play a ringtone
+await ringtone.playRingtone(ringtoneModel.uri);
+
+// Stop currently playing ringtone
+await ringtone.stopRingtone();
+
+// Get information about a specific ringtone
+Map<String, dynamic> info = await ringtone.getRingtoneInfo(ringtoneModel.uri);
+print('Is Playing: ${info['isPlaying']}');
+print('Duration: ${info['duration']}ms');
+```
+
+### Enhanced Ringtone Information
+
+```dart
+// Get detailed information about a specific ringtone
+Map<String, dynamic> details = await ringtone.getRingtoneDetails(ringtoneModel.uri);
+print('Enhanced Title: ${details['title']}');
+print('Display Title: ${details['displayTitle']}');
+print('File Path: ${details['filePath']}');
+print('File Size: ${details['fileSize']} bytes');
+print('Duration: ${details['duration']}ms');
+print('Is Default: ${details['isDefault']}');
 ```
 
 ### Type-Specific Methods
@@ -124,7 +160,7 @@ List<JbhRingtoneModel> mixedRingtones = await ringtone.getRingtonesByTypes([
 ]);
 ```
 
-### Advanced Usage with UI
+### Advanced Usage with UI and Audio Controls
 
 ```dart
 import 'package:flutter/material.dart';
@@ -139,6 +175,8 @@ class _RingtoneListPageState extends State<RingtoneListPage> {
   List<JbhRingtoneModel> _ringtones = [];
   bool _isLoading = false;
   String? _error;
+  String? _currentlyPlayingUri;
+  bool _isPlaying = false;
   RingtoneType _selectedType = RingtoneType.ringtone;
 
   @override
@@ -169,12 +207,64 @@ class _RingtoneListPageState extends State<RingtoneListPage> {
     }
   }
 
+  Future<void> _playRingtone(JbhRingtoneModel ringtone) async {
+    try {
+      final JbhRingtone jbhRingtone = JbhRingtone();
+      
+      // Stop previous ringtone if playing
+      if (_isPlaying) {
+        await jbhRingtone.stopRingtone();
+      }
+      
+      // Play new ringtone
+      await jbhRingtone.playRingtone(ringtone.uri);
+      
+      setState(() {
+        _currentlyPlayingUri = ringtone.uri;
+        _isPlaying = true;
+      });
+      
+      // Auto-stop after 5 seconds
+      Future.delayed(Duration(seconds: 5), () async {
+        if (_currentlyPlayingUri == ringtone.uri) {
+          await jbhRingtone.stopRingtone();
+          setState(() {
+            _currentlyPlayingUri = null;
+            _isPlaying = false;
+          });
+        }
+      });
+    } catch (e) {
+      print('Error playing ringtone: $e');
+    }
+  }
+
+  Future<void> _stopRingtone() async {
+    try {
+      final JbhRingtone jbhRingtone = JbhRingtone();
+      await jbhRingtone.stopRingtone();
+      
+      setState(() {
+        _currentlyPlayingUri = null;
+        _isPlaying = false;
+      });
+    } catch (e) {
+      print('Error stopping ringtone: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Available Ringtones'),
         actions: [
+          if (_isPlaying)
+            IconButton(
+              icon: Icon(Icons.stop),
+              onPressed: _stopRingtone,
+              tooltip: 'Stop Playing',
+            ),
           PopupMenuButton<RingtoneType>(
             onSelected: (RingtoneType type) {
               setState(() {
@@ -199,14 +289,49 @@ class _RingtoneListPageState extends State<RingtoneListPage> {
                   itemCount: _ringtones.length,
                   itemBuilder: (context, index) {
                     final ringtone = _ringtones[index];
+                    final isCurrentlyPlaying = _currentlyPlayingUri == ringtone.uri;
+                    
                     return ListTile(
-                      title: Text(ringtone.title),
-                      subtitle: Text('Type: ${ringtone.type.displayName}'),
-                      trailing: Icon(Icons.music_note),
-                      onTap: () {
-                        // Handle ringtone selection
-                        print('Selected: ${ringtone.title} (${ringtone.type.displayName})');
-                      },
+                      leading: CircleAvatar(
+                        backgroundColor: isCurrentlyPlaying ? Colors.green : Colors.blue,
+                        child: Icon(
+                          isCurrentlyPlaying ? Icons.play_arrow : Icons.music_note,
+                          color: Colors.white,
+                        ),
+                      ),
+                      title: Text(
+                        ringtone.displayTitle,
+                        style: TextStyle(
+                          fontWeight: isCurrentlyPlaying ? FontWeight.bold : FontWeight.normal,
+                        ),
+                      ),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Duration: ${ringtone.formattedDuration}'),
+                          Text('Size: ${ringtone.formattedFileSize}'),
+                          if (ringtone.isDefault)
+                            Text('Default', style: TextStyle(color: Colors.amber)),
+                        ],
+                      ),
+                      trailing: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              isCurrentlyPlaying ? Icons.stop : Icons.play_arrow,
+                              color: isCurrentlyPlaying ? Colors.red : Colors.green,
+                            ),
+                            onPressed: () {
+                              if (isCurrentlyPlaying) {
+                                _stopRingtone();
+                              } else {
+                                _playRingtone(ringtone);
+                              }
+                            },
+                          ),
+                        ],
+                      ),
                     );
                   },
                 ),
@@ -227,7 +352,7 @@ The main class for interacting with device ringtones.
 
 Retrieves all available ringtones from the device (legacy method for backward compatibility).
 
-**Returns:** `Future<List<Map<String, dynamic>>>`
+**Returns:** `Future<List<JbhRingtoneModel>>`
 
 ##### `getRingtonesByType(RingtoneType type)`
 
@@ -257,6 +382,39 @@ Retrieves ringtones with custom filter options.
 - `includeAlarm`: Whether to include alarm sounds (default: false)
 
 **Returns:** `Future<List<JbhRingtoneModel>>`
+
+##### `playRingtone(String uri)`
+
+Plays a ringtone by its URI.
+
+**Parameters:**
+- `uri`: The URI of the ringtone to play
+
+**Returns:** `Future<String>` - Success message
+
+##### `stopRingtone()`
+
+Stops the currently playing ringtone.
+
+**Returns:** `Future<String>` - Success message
+
+##### `getRingtoneInfo(String uri)`
+
+Gets basic information about a specific ringtone.
+
+**Parameters:**
+- `uri`: The URI of the ringtone
+
+**Returns:** `Future<Map<String, dynamic>>` - Basic ringtone information
+
+##### `getRingtoneDetails(String uri)`
+
+Gets detailed information about a specific ringtone (enhanced version).
+
+**Parameters:**
+- `uri`: The URI of the ringtone
+
+**Returns:** `Future<Map<String, dynamic>>` - Detailed ringtone information
 
 #### Convenience Methods
 
@@ -292,7 +450,7 @@ Gets the current platform version.
 
 ### JbhRingtoneModel Class
 
-Represents a single ringtone with its properties.
+Represents a single ringtone with comprehensive properties.
 
 #### Properties
 
@@ -300,8 +458,22 @@ Represents a single ringtone with its properties.
 |----------|------|-------------|
 | `id` | `int` | Unique identifier for the ringtone |
 | `title` | `String` | Human-readable name of the ringtone |
+| `displayTitle` | `String` | User-friendly display title (shortened if needed) |
+| `fileName` | `String` | Original file name of the ringtone |
 | `uri` | `String` | Content URI for accessing the ringtone file |
+| `uriType` | `String` | Type of URI (content, file, unknown) |
+| `filePath` | `String?` | File path on device (null for lazy loading) |
+| `fileSize` | `int` | File size in bytes (0 for lazy loading) |
+| `duration` | `int` | Duration in milliseconds (0 for lazy loading) |
 | `type` | `RingtoneType` | Type of the ringtone (ringtone, notification, alarm, all) |
+| `isDefault` | `bool` | Whether this is a default ringtone (false for lazy loading) |
+
+#### Computed Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `formattedDuration` | `String` | Duration formatted as "M:SS" |
+| `formattedFileSize` | `String` | File size formatted as "X.X MB/KB" |
 
 #### Methods
 
@@ -312,6 +484,18 @@ Creates a JbhRingtoneModel from a map.
 ##### `toMap()`
 
 Converts the model to a map.
+
+##### `toString()`
+
+Returns a string representation with key information.
+
+##### `operator ==(Object other)`
+
+Compares two JbhRingtoneModel instances for equality.
+
+##### `hashCode`
+
+Returns the hash code for the model.
 
 ### RingtoneType Enum
 
@@ -345,6 +529,12 @@ try {
   if (e.toString().contains('RINGTONE_ERROR')) {
     // Handle ringtone-specific errors
     print('Failed to access ringtones: $e');
+  } else if (e.toString().contains('PLAY_ERROR')) {
+    // Handle playback errors
+    print('Failed to play ringtone: $e');
+  } else if (e.toString().contains('STOP_ERROR')) {
+    // Handle stop errors
+    print('Failed to stop ringtone: $e');
   } else {
     // Handle general errors
     print('Unexpected error: $e');
@@ -352,11 +542,28 @@ try {
 }
 ```
 
+## Performance Optimizations
+
+The plugin includes several performance optimizations:
+
+### Lazy Loading
+- **Fast initial loading**: Basic information loads quickly
+- **Detailed info on demand**: File size, duration, and metadata loaded only when needed
+- **Efficient memory usage**: Minimal memory footprint
+
+### Caching
+- **Ringtone caching**: Frequently accessed ringtones are cached
+- **Title optimization**: Smart title resolution for better performance
+
+### Batch Operations
+- **Efficient queries**: Optimized database queries for faster results
+- **Limited results**: Configurable limits to prevent memory issues
+
 ## Platform Support
 
 | Platform | Support | Notes |
 |----------|---------|-------|
-| Android | ✅ Full | Requires Android API level 21+ |
+| Android | ✅ Full | Requires Android API level 21+, includes audio playback |
 | iOS | 🚧 In Development | Coming in future updates |
 | Web | ❌ Not supported | Platform-specific functionality |
 | Desktop | ❌ Not supported | Platform-specific functionality |
@@ -368,6 +575,7 @@ try {
 The plugin automatically requests the following permissions:
 
 - `READ_EXTERNAL_STORAGE` - Required to access ringtone files
+- Audio playback permissions are handled automatically
 
 ### iOS
 
@@ -375,26 +583,35 @@ The plugin automatically requests the following permissions:
 
 ## Roadmap
 
-### Version 1.1 (Next Release)
+### Version 1.2 (Next Release)
 - 🍎 iOS support
-- 🎧 Basic audio preview functionality
-- 📝 Improved ringtone title resolution
+- 🎛️ Volume control
+- ⏱️ Playback controls (pause, resume, seek)
+- 📱 Better UI components
 
-### Future Versions
+### Version 1.3
 - 🎯 Enhanced selection features
 - 🔄 Ringtone management (set as default, etc.)
-- 📱 Better UI components
+- 📝 Improved ringtone title resolution
 - 🧪 Comprehensive testing suite
+
+### Future Versions
+- 🎨 Custom UI widgets
+- 🔧 Advanced configuration options
+- 📊 Usage analytics
+- 🌐 Cross-platform synchronization
 
 ## Example App
 
 Check out the [example app](example/) for a complete implementation showing how to:
 
-- Display a list of available ringtones
-- Handle loading states
-- Implement error handling
-- Create a user-friendly interface
+- Display a list of available ringtones with enhanced information
+- Handle loading states and error handling
+- Implement audio playback controls
+- Create a user-friendly interface with play/stop functionality
 - Use type-specific filtering
+- Show detailed ringtone information
+- Handle real-time playback status
 
 ## Contributing
 
@@ -436,6 +653,7 @@ If you encounter any issues or have questions, please:
 
 - Flutter team for the excellent plugin development framework
 - Android and iOS communities for platform-specific guidance
+- Contributors and users for feedback and suggestions
 
 ---
 

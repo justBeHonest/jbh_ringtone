@@ -54,7 +54,7 @@ class _RingtoneListPageState extends State<RingtoneListPage> {
     error = null;
     try {
       final JbhRingtone ringtone = JbhRingtone();
-      ringtones = await ringtone.getAllRingtones();
+      ringtones = await ringtone.getRingtones();
       // alarmRingtones = await ringtone.getAlarmRingtones();
       // notificationRingtones = await ringtone.getNotificationRingtones();
       // ringtoneOnly = await ringtone.getRingtoneOnly();
