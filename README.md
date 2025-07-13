@@ -41,7 +41,7 @@ Add `jbh_ringtone` to your `pubspec.yaml` file:
 
 ```yaml
 dependencies:
-  jbh_ringtone: ^1.0.1
+  jbh_ringtone: ^1.0.3
 ```
 
 Then run:
