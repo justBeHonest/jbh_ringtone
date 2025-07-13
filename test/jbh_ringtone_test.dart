@@ -13,6 +13,24 @@ class MockJbhRingtonePlatform with MockPlatformInterfaceMixin implements JbhRing
     {'id': 1, 'title': 'Test Ringtone 1', 'uri': 'content://media/external/audio/media/1'},
     {'id': 2, 'title': 'Test Ringtone 2', 'uri': 'content://media/external/audio/media/2'},
   ]);
+
+  @override
+  Future<List<JbhRingtoneModel>> getRingtonesByType(RingtoneType type) {
+    // TODO: implement getRingtonesByType
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<JbhRingtoneModel>> getRingtonesByTypes(List<RingtoneType> types) {
+    // TODO: implement getRingtonesByTypes
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<JbhRingtoneModel>> getRingtonesWithFilter({bool includeRingtone = false, bool includeNotification = false, bool includeAlarm = false}) {
+    // TODO: implement getRingtonesWithFilter
+    throw UnimplementedError();
+  }
 }
 
 void main() {

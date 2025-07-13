@@ -1,7 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'jbh_ringtone_method_channel.dart';
-import 'jbh_ringtone_model.dart';
+import 'model/jbh_ringtone_model.dart';
 
 abstract class JbhRingtonePlatform extends PlatformInterface {
   /// Constructs a JbhRingtonePlatform.
@@ -29,7 +29,7 @@ abstract class JbhRingtonePlatform extends PlatformInterface {
   }
 
   /// Get all ringtones (legacy method for backward compatibility)
-  Future<List<Map<String, dynamic>>> getRingtones() {
+  Future<List<JbhRingtoneModel>> getRingtones() {
     throw UnimplementedError('getRingtones() has not been implemented.');
   }
 
